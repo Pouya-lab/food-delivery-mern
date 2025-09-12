@@ -1,4 +1,4 @@
-.navbar{
+.nav{
     padding: 25px 0px;
     display: flex;
     justify-content: space-between;
@@ -9,7 +9,7 @@
     width: 150px;
 }
 
-.navbar-menu{
+.nav-menu{
     display: flex;
     list-style: none;
     gap: 20px;
@@ -18,13 +18,13 @@
     cursor: pointer;
 }
 
-.navbar-right{
+.nav-right{
     display: flex;
     align-items: center;
     gap: 40px;
 }
 
-.navbar button {
+.nav button {
     background: transparent;
     font-size: 16px;
     color: #49557e;
@@ -35,20 +35,20 @@
     transition: 0.3s;
 }
 
-.navbar button:hover{
+.nav button:hover{
     background-color: #fff4f2;
 }
 
-.navbar .active{
+.nav .active{
     padding-bottom: 2px;
     border-bottom: 2px solid #49557e;
 }
 
-.navbar-search-icon{
+.nav-search-icon{
     position: relative ;
 }
 
-.navbar-search-icon .dot{
+.nav-search-icon .dot{
     position: absolute;
     min-width: 10px;
     min-height: 10px;
@@ -57,4 +57,49 @@
     top: -8px;
     right: -8px;
     
+}
+
+@media ( max-width : 1050px ){
+    .nav .logo{
+        width: 140px;
+    }
+    .nav-menu{
+        gap: 20px;
+        font-size: 17px;
+    }
+    .nav-right{
+        gap: 30px;
+    }
+    .nav-right img{
+        width: 22px;
+    }
+    .nav-righ button{
+        padding: 8px 25px;
+    }
+}
+
+@media ( max-width : 900px ){
+    .nav .logo{
+        width: 120px;
+    }
+    .nav-menu{
+        gap: 15px;
+        font-size: 16px;
+    }
+    .nav-right{
+        gap: 20px;
+    }
+    .nav-right img{
+        width: 20px;
+    }
+    .nav-righ button{
+        padding: 7px 20px;
+        font-size: 15px;
+    }
+}
+
+@media only screen and (max-width:750px){
+    .nav-menu{
+        display: none;
+    }
 }
