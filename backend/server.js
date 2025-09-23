@@ -21,6 +21,7 @@ connectDB()
 
 //api endpoint
 app.use("/api/food" , foodRouter)
+app.use("/images" , express.static('uploads'))
 
 //accessing backend from frontend using cors
 app.use( cors() )
