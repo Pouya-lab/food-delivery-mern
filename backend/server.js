@@ -3,6 +3,7 @@ import cors from "cors"
 import { connect } from "mongoose"
 import { connectDB } from "./config/db.js"
 import dotenv from "dotenv";
+import foodRouter from "./routes/foodRoute.js";
 
 //connecting for the .env file to the server
 dotenv.config();
@@ -17,6 +18,9 @@ app.use(express.json())
 
 //db connection for the connection in the import shuld always write db.js not db alone
 connectDB()
+
+//api endpoint
+app.use("/api/food " , foodRouter)
 
 //accessing backend from frontend using cors
 app.use( cors() )
