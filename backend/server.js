@@ -20,7 +20,7 @@ app.use(express.json())
 connectDB()
 
 //api endpoint
-app.use("/api/food " , foodRouter)
+app.use("/api/food" , foodRouter)
 
 //accessing backend from frontend using cors
 app.use( cors() )
