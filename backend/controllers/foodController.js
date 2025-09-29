@@ -39,3 +39,17 @@ export const  listFood = async ( req , res ) => {
     }
 
 }
+
+export const removeFood = async ( req , res ) =>{
+    try {
+        const food = await foodModel.findById(req.body.id);
+        // line below is for deleting the image which was created by us and now we want to delet the image and also the data in DB which comes after
+        fs.unlink(`uploads/${food.image}` , ()=>{})
+        await foodModel.findByIdAndDelete( req.body.id )
+        res.json({ success : true  , message : "Item removed "})
+
+    } catch (error) {
+        console.log(error);
+        res.json({ success : false , message : "Error" })
+    }
+}
