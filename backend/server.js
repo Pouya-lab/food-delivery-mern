@@ -12,6 +12,13 @@ dotenv.config();
 const app = express()
 const port = 4000
 
+//accessing backend from frontend using cors and also should be on top so it would run correctly
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Vite dev server
+  })
+);
+
 // middleware
 
 app.use(express.json())
@@ -23,8 +30,6 @@ connectDB()
 app.use("/api/food" , foodRouter)
 app.use("/images" , express.static('uploads'))
 
-//accessing backend from frontend using cors
-app.use( cors() )
 
 
 app.get("/" , ( req , res )=>{
