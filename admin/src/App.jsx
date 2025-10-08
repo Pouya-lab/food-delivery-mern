@@ -9,7 +9,8 @@ import List from './pages/List/List'
 
 function App() {
 
-  const url = "http://localhost:4000"; 
+  // const url = "http://localhost:4000"; 
+   const url = "http://localhost:4000";
 
   return (
     <div>
@@ -20,8 +21,8 @@ function App() {
           <Sidebar/>
           <Routes>
             <Route path = "/add" element = {<Add url={url} />} />
-            <Route path='/orders' element = {<Orders/>} />
-            <Route path='/list' element = {<List/>} />
+            <Route path='/orders' element = {<Orders url={url} />} />
+            <Route path='/list' element = {<List url={url} />} />
           </Routes>
         </div>
     </div>
