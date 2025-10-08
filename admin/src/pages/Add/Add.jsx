@@ -4,9 +4,9 @@ import { assets } from "../../assets/assets";
 import axios from "axios"
 import { toast } from "react-toastify";
 
-function Add() {
+function Add({url}) {
 
-  const url = "http://localhost:4000";
+ 
   const [ image , setImage ] = useState( false )
   // state below for storing the first give data from user and saving them as state
   const [ data , setData ] = useState({
