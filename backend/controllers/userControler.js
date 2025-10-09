@@ -44,7 +44,7 @@ export const registerUser = async(req, res) => {
   })
 
   const user = await newUser.save()
-
+  // after all conditions are met then we make a token (ID for user) to go to web and can have access
   const token = createToken( user._id )
 
   res.json({ success : true , token})
@@ -57,4 +57,31 @@ export const registerUser = async(req, res) => {
 };
 
 // login user
-export const loginUser = async (req, res) => {};
+export const loginUser = async (req, res) => {
+
+  const { email , password } = req.body;
+
+  try {
+    const  user = await userModel.findOne({ email })
+
+    if(!user){
+      res.json( {success : false , message : "No user exists with the given Email!!" }  )
+    }
+
+    const isMatch = await bcrypt.compare( password , user.password )
+
+    if(!isMatch){
+      res.json({ success : false , message : "The password is incorrect!" })
+    }
+
+    const token = createToken( user._id );
+    res.json({ success : true , token })
+
+
+  } catch (error) {
+    console.log(error);
+    res.json({ succcess : false , message : "Error" })
+    
+  }
+
+};
