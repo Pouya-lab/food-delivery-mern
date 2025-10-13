@@ -35,6 +35,13 @@ const StoreContextProvider = (props) =>{
         return totalAmount;
     }
 
+    // this useEffect prevents logging out when we refresh the webpage
+    useEffect(()=>{
+        if(localStorage.getItem("token")){
+            setToken(localStorage.getItem("token"))
+        }
+    },[])
+
     const contextValue = {
         food_list,
         cartItems,
