@@ -5,6 +5,7 @@ import { connectDB } from "./config/db.js"
 import dotenv from "dotenv";
 import foodRouter from "./routes/foodRoute.js";
 import userRouter from "./routes/userRoute.js";
+import  cartRouter from "./routes/cartRoute.js";
 
 //connecting for the .env file to the server
 dotenv.config();
@@ -31,6 +32,7 @@ connectDB()
 app.use("/api/food" , foodRouter)
 app.use("/images" , express.static('uploads'))
 app.use("/api/user" , userRouter)
+app.use("/api/cart" , cartRouter)
 
 
 app.get("/" , ( req , res )=>{
