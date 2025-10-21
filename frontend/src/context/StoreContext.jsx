@@ -29,7 +29,7 @@ const StoreContextProvider = (props) =>{
         if(token){
             await axios.post( url + "/api/cart/remove" , { itemId } , { headers : {token} })
         }
-        
+
     }
 
     const getTotalCartAmount = () =>{
@@ -44,20 +44,27 @@ const StoreContextProvider = (props) =>{
         return totalAmount;
     }
 
-    const fetchFoofList = async()=>{
+    const fetchFoodList = async()=>{
         const response = await axios.get(url + "/api/food/list")
         setFoodList(response.data.data)
     } 
+    // prevent losing data in front while refreshing
+    const loadCartData = async( token )=>{
+        const response = await axios.post( url + "/api/cart/get" , {} , { headers : { token } })
+        setCartItems( response.data.cartData )
+    }
 
-    // this useEffect prevents logging out when we refresh the webpage
+   
     useEffect(()=>{
-
+         // this useEffect prevents logging out when we refresh the webpage
         async function loadData(){
-           await fetchFoofList()
+           await fetchFoodList()
+
+           if(localStorage.getItem("token")){
+                setToken(localStorage.getItem("token"))
+                await loadCartData( localStorage.getItem("token") )
         }
 
-        if(localStorage.getItem("token")){
-            setToken(localStorage.getItem("token"))
         }
         loadData()
     },[])
