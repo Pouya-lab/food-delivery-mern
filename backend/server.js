@@ -7,9 +7,15 @@ import foodRouter from "./routes/foodRoute.js";
 import userRouter from "./routes/userRoute.js";
 import  cartRouter from "./routes/cartRoute.js";
 import orderRouter from "./routes/orderRoute.js";
+import Stripe from "stripe";
+
 
 //connecting for the .env file to the server
+// also donenv.config should be above stripe even if the placeorder file is being run before server file the env activates after the place order file and then we get the error of not getting the key from env file
 dotenv.config();
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+
 
 //app config
 const app = express()
@@ -43,5 +49,5 @@ app.get("/" , ( req , res )=>{
 
 app.listen( port , ()=>{
     console.log(`Server started on http://localhost:${port}`);
-    
+
 } )
