@@ -6,7 +6,7 @@ const orderSchema = new mongoose.Schema({
         type : String , 
         required : true
     },
-    item : {
+    items : {
         type : Array , 
         required : true ,
     },
