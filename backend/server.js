@@ -14,7 +14,7 @@ import Stripe from "stripe";
 // also donenv.config should be above stripe even if the placeorder file is being run before server file the env activates after the place order file and then we get the error of not getting the key from env file
 dotenv.config();
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
 
 //app config

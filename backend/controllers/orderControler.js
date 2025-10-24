@@ -1,64 +1,58 @@
+import dotenv from "dotenv";
+dotenv.config();
 import orderModel from "../models/orderModel.js";
-import userModel from "../models/userModel.js"
+import userModel from "../models/userModel.js";
+import Stripe from "stripe";
 
-// we have to import stripe in server to prevent error for (Neither apiKey nor config.authenticator provided)
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
- export const placeOrder = async( req , res ) => {
+export const placeOrder = async (req, res) => {
+  const frontend_url = "http://localhost:5173";
 
-    const frontend_url = "http://localhost:5173"
+  try {
 
-    try {
-        
-        const newOrder = new orderModel( { 
-            userId : req.body.userId,
-            items : req.body.items,
-            amount : req.body.amount,
-            address : req.body.address,
-         } )
-         await newOrder.save();
-        //  after placing the order we need to set the cart to an empty object to clear the cart data
-         await userModel.findByIdAndUpdate( req.body.userId , { cartData : {} })
+    const newOrder = new orderModel({
+      userId: req.body.userId,
+      items: req.body.items,
+      amount: req.body.amount,
+      address: req.body.address,
+    });
+    await newOrder.save();
 
-         const line_items = req.body.items.map(( item )=>{
-                price_data : {
 
-                    currency : "eur";
-                    product_data : {
-                        name:item.name
-                    };
-                    unit_amount: item.price*100;
+    await userModel.findByIdAndUpdate(req.body.userId, { cartData: {} });
 
-                }
-                quantity : item.quantity
-         })
 
-         line_items.push({
+    const line_items = req.body.items.map((item) => ({
+      price_data: {
+        currency: "eur",
+        product_data: {
+          name: item.name,
+        },
+        unit_amount: item.price * 100, // amount in cents
+      },
+      quantity: item.quantity,
+    }));
 
-            price_data : {
+    line_items.push({
+      price_data: {
+        currency: "eur",
+        product_data: { name: "Delivery Charges" },
+        unit_amount: 2 * 100,
+      },
+      quantity: 1,
+    });
 
-                currency : "eur",
-                product_data : {
-                    name : "Delivery Charges"
-                },
-                unit_amount : 2*100
-            },
-            quantity : 1,
+    const session = await stripe.checkout.sessions.create({
+      line_items: line_items,
+      mode: "payment",
+      success_url: `${frontend_url}/verify?success=true&orderId=${newOrder._id}`,
+      cancel_url: `${frontend_url}/verify?success=false&orderId=${newOrder._id}`,
+    });
 
-         })
-
-         const session = await Stripe.checkout.session.create({
-            line_items :line_items,
-            mode:'payment',
-            success_url:`${frontend_url}/verify?success=true&orderId=${newOrder._id}`,
-            cancel_url:`${frontend_url}/verify?success=false&orderId=${newOrder._id}`,
-         })
-
-         res.json({ success : true , session_url : session.url})
-
-    } catch (error) {
-        console.log(error);
-        res.json({ success : false , message : "Error"})
-        
-    }
-
- }
+    res.json({ success: true, session_url: session.url });
+  } catch (error) {
+    console.error(error);
+    res.json({ success: false, message: "Error" });
+  }
+};
