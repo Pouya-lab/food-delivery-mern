@@ -1,11 +1,14 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import "./PlaceOrder.css";
 import { StoreContext } from "../../context/StoreContext";
 import { useState } from "react";
 import axios from "axios"
+import { useNavigate } from "react-router-dom";
 
 function PlaceOrder() {
+
   const { getTotalCartAmount , token , food_list , cartItems , url } = useContext(StoreContext);
+  const navigate = useNavigate()
 
   const [ data , setData ] = useState({
     firstName : "",
@@ -50,6 +53,16 @@ function PlaceOrder() {
       }
       
     }
+// logic for place order page toward refreshing and redirecting if the cart amount is 0 or not
+    useEffect(()=>{
+      if(!token){
+        navigate("/cart")
+      }
+      else if( getTotalCartAmount() === 0 ){
+        navigate("/cart")
+      }
+
+    }, [token])
 
 
   return (
