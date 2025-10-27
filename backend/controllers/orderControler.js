@@ -7,7 +7,7 @@ import Stripe from "stripe";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const placeOrder = async (req, res) => {
-  const frontend_url = "http://localhost:5173";
+  const frontend_url = "http://localhost:5174";
 
   try {
 
@@ -97,6 +97,17 @@ export const listOrders = async(req , res )=>{
   } catch (error) {
     console.log(error);
     res.json({ success : false , message : "Error"});
+    
+  }
+}
+
+export const updateStatus = async( req , res )=>{
+  try {
+      await orderModel.findByIdAndUpdate( req.body.orderId  , { status : req.body.status } );
+      res.json({ success : true , message : "Status Updated"})
+  } catch (error) {
+    console.log(error);
+    res.json({ success : false , message : "Error" })
     
   }
 }

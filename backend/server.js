@@ -22,9 +22,10 @@ const app = express()
 const port = 4000
 
 //accessing backend from frontend using cors and also should be on top so it would run correctly
+// for running two ports on cors 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Vite dev server
+    origin: ["http://localhost:5173", "http://localhost:5174"], // Vite dev server
   })
 );
 
